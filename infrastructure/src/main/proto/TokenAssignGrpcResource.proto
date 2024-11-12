@@ -1,0 +1,147 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "ec.com.dinersclub.dddmodules.application.grpc.tokenassign";
+option java_outer_classname = "TokenAssignProto";
+
+package tokenassign;
+
+service ServiciosToken {
+    rpc getCardDetailToken (TokenRequest) returns (TokenResponse) {}
+
+    rpc updateCardDetailToken (TokenUpdateRequest) returns (TokenUpdateResponse) {}
+}
+
+message TokenUpdateRequest{
+    Header dinHeader = 1;
+    BodyRequestUpdateToken dinBody = 2;
+}
+
+message BodyRequestUpdateToken {
+	PaymentCardRequest paymentCard = 1;
+    OrganizationIdentification organizationIdentification = 2;
+}
+
+message TokenUpdateResponse {
+	Header dinHeader = 1;
+	BodyResponseUpdateToken dinBody = 2;
+	Error dinError = 3;
+}
+
+message BodyResponseUpdateToken {
+	string cardExpiryDate = 1;
+    string cardStartDate = 2;
+}
+
+message TokenRequest{
+    Header dinHeader = 1;
+    BodyRequestToken dinBody = 2;
+}
+
+message BodyRequestToken {
+	PaymentCardRequest paymentCard = 1;
+	OrganizationIdentification organizationIdentification = 2;
+}
+
+message PaymentCardRequest {
+	string cardNumber = 1;
+	string cardBrand = 2;
+}
+
+message OrganizationIdentification {
+	string bankIdentificationNumber = 1;
+}
+
+message TokenResponse {
+	Header dinHeader = 1;
+	BodyResponseToken dinBody = 2;
+	Error dinError = 3;
+}
+
+message BodyResponseToken {
+	PersonRequest person = 1;
+	ProductRequest product = 2;
+	PaymentCardResponse paymentCard = 3;
+	DeviceRequest device = 4;
+	AccountRequest account = 5;
+}
+
+message PaymentCardResponse{
+    string cardNumber = 1;
+    string cardExpiryDate = 2;
+    string cardStartDate = 3;
+    string nameInCard = 4;
+}
+
+message PersonRequest{
+    PersonNameRequest personName = 1;
+    string cedula = 2;
+}
+
+message PersonNameRequest{
+    string givenName = 1;
+    string secondName = 2;
+    string middleName = 3;
+    string lastName = 4;
+}
+
+message ProductRequest{
+    string name = 1;
+    string description = 2;
+    string numberValidityYears = 3;
+    string numberValidityMonths = 4;
+}
+
+message DeviceRequest{
+    string cancelationCode = 1;
+    string descriptionCancelationCode = 2;
+    string boletinCode = 3;
+    string descriptionBoletinCode = 4;
+}
+
+message AccountRequest{
+    AccountIdentificationRequest accountIdentification = 1;
+}
+
+message  AccountIdentificationRequest{
+    string accountIdentification = 1;
+    string accountIdentificationType = 2;
+}
+
+message Header {
+	string aplicacionId = 1;
+	string canalId = 2;
+	string sesionId = 3;
+	string dispositivo = 4;
+	string idioma = 5;
+	string portalId = 6;
+	string uuid = 7;
+	string ip = 8;
+	string horaTransaccion = 9;
+	string llaveSimetrica = 10;
+	string usuario = 11;
+	PaginadoHeader paginado = 12;
+	repeated TagsHeader tags = 13;
+}
+
+message PaginadoHeader {
+    int32 cantRegistros = 1;
+	int32 numTotalPag = 2;
+	int32 numPagActual = 3;
+}
+
+message TagsHeader {
+    string clave = 1;
+	string valor = 2;
+}
+
+
+message Error {
+	string tipo = 1;
+	string fecha = 2;
+	string origen = 3;
+	string codigo = 4;
+	string codigoErrorProveedor = 5;
+	string mensaje = 6;	string detalle = 7;
+}
+
